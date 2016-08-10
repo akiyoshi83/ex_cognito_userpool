@@ -170,43 +170,9 @@ function signout() {
 }
 
 function showSync() {
-  //AWS.config.credentials.get(function() {
-  //});
   client = new AWS.CognitoSyncManager();
   client.openOrCreateDataset('myDatasetName', function(err, dataset) {
-    dataset.synchronize({
-      onSuccess: function(dataset, newRecords) {
-        console.log(arguments);
-      },
-      onFailure: function(err) {
-        console.log(err);
-      },
-      onConflict: function(dataset, conflicts, callback) {
-        console.log(arguments);
-
-        var resolved = [];
-        for (var i=0; i<conflicts.length; i++) {
-          // Take remote version.
-          resolved.push(conflicts[i].resolveWithRemoteRecord());
-          // Or... take local version.
-          // resolved.push(conflicts[i].resolveWithLocalRecord());
-          // Or... use custom logic.
-          // var newValue = conflicts[i].getRemoteRecord().getValue() + conflicts[i].getLocalRecord().getValue();
-          // resolved.push(conflicts[i].resolveWithValue(newValue);
-        }
-        dataset.resolve(resolved, function() {
-          return callback(true);
-        });
-      },
-      onDatabaseDelete: function(dataset, datasetName, callback) {
-        console.log(arguments);
-        callback(true);
-      },
-      onDatasetMerged: function(dataset, datasetNames, callback) {
-        console.log(arguments);
-        callback(true);
-      }
-    });
+    dataset.synchronize();
     dataset.getAll(function(err, records) {
       if (err) {
         console.log(err);
