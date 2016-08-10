@@ -142,11 +142,15 @@ function signin() {
       // ユーザー登録・確認・ログイン後に取得した token をセット
       var logins = {};
       logins[PROVIDER] = result.getIdToken().getJwtToken();
-      AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: IDENTITY_POOL_ID,
-        Logins : logins
-      });
-      // refresh 後にマネジメントコンソールで確認すると Identity が Linked になっている
+
+      var credentialData = {};
+      credentialData['IdentityPoolId'] = IDENTITY_POOL_ID;
+      credentialData['Logins'] = logins;
+      if (AWS.config.credentials.identityId) {
+        credentialData['IdentityId'] = AWS.config.credentials.identityId;
+      }
+      AWS.config.credentials = new AWS.CognitoIdentityCredentials(credentialData);
+
       AWS.config.credentials.refresh(function(){
         console.log('[SIGNIN][REFRESH]', arguments);
       });
