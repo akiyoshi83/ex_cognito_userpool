@@ -143,6 +143,7 @@ function signin() {
       var logins = {};
       logins[PROVIDER] = result.getIdToken().getJwtToken();
 
+      // credentials の再作成時に guest 時の IdentityId があればセット
       var credentialData = {};
       credentialData['IdentityPoolId'] = IDENTITY_POOL_ID;
       credentialData['Logins'] = logins;
@@ -151,6 +152,7 @@ function signin() {
       }
       AWS.config.credentials = new AWS.CognitoIdentityCredentials(credentialData);
 
+      // refresh 後にマネジメントコンソールで確認すると Identity が Linked になっている
       AWS.config.credentials.refresh(function(){
         console.log('[SIGNIN][REFRESH]', arguments);
       });
