@@ -43,7 +43,7 @@ function signup() {
     UserPoolId : USER_POOL_ID,
     ClientId : CLIENT_ID
   };
-  var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
   var attributeList = [];
 
@@ -51,7 +51,7 @@ function signup() {
     Name : 'email',
     Value : email
   };
-  var attributeEmail = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
+  var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
   attributeList.push(attributeEmail);
 
   userPool.signUp(username, password, attributeList, null, function(err, result) {
@@ -72,13 +72,13 @@ function confirm() {
     UserPoolId : USER_POOL_ID,
     ClientId : CLIENT_ID
   };
-  var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
   var userData = {
     Username : username,
     Pool : userPool
   };
-  var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+  var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
   cognitoUser.confirmRegistration(code, true, function(err, result) {
     if (err) {
@@ -97,13 +97,13 @@ function resendConfirm() {
     UserPoolId : USER_POOL_ID,
     ClientId : CLIENT_ID
   };
-  var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
   var userData = {
     Username : username,
     Pool : userPool
   };
-  var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+  var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
   cognitoUser.resendConfirmationCode(function(err, result) {
     if (err) {
@@ -122,19 +122,19 @@ function signin() {
     UserPoolId : USER_POOL_ID,
     ClientId : CLIENT_ID
   };
-  var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
   var userData = {
     Username : username,
     Pool : userPool
   };
-  var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+  var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
   var authenticationData = {
     Username : username,
     Password : password
   };
-  var authenticationDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(authenticationData);
+  var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
 
   cognitoUser.authenticateUser(authenticationDetails, {
     onSuccess: function (result) {
@@ -168,7 +168,7 @@ function signout() {
     UserPoolId : USER_POOL_ID,
     ClientId : CLIENT_ID
   };
-  var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
   var cognitoUser = userPool.getCurrentUser();
 
   cognitoUser.signOut();
